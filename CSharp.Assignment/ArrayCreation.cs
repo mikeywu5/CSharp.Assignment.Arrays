@@ -99,7 +99,8 @@ namespace CSharp.Assignments
         /// number n by each other, repeating with the product
         /// until a single digit is obtained. In addition, populate the products
         /// array with all the products in descending order,
-        /// starting from index 0.
+        /// starting from index 0. Do not store the extra products into
+        /// the array if the array's sizes is an issue.
         /// </summary>
         /// <example>
         /// For example, the number 277 has a multiplicative persistence

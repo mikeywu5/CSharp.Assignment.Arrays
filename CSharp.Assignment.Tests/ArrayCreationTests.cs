@@ -551,7 +551,7 @@ namespace CSharp.Assignments.Tests
             num = 26888999;
             expected = 9;
             actualArray = new long[12];
-            expectedArray = new long[] { 00, 20, 54, 336, 768, 2688, 27648, 338688, 4478976, 0, 0, 0 };
+            expectedArray = new long[] { 0, 20, 54, 336, 768, 2688, 27648, 338688, 4478976, 0, 0, 0 };
             actual = _object.MultiplicativePersistence(num, actualArray);
             Assert.Equal(expected, actual);
             s = string.Join(", ", actualArray);
@@ -570,6 +570,37 @@ namespace CSharp.Assignments.Tests
             expected = 11;
             expectedArray = new long[] { 0, 20, 54, 336, 768, 2688, 27648, 338688, 4478976, 438939648, 4996238671872, 0 };
             actualArray = new long[12];
+            actual = _object.MultiplicativePersistence(num, actualArray);
+            Assert.Equal(expected, actual);
+            s = string.Join(", ", actualArray);
+            Assert.Equal(expectedArray, actualArray);
+
+
+            num = 277777788888899;
+            actualArray = null;
+            actual = _object.MultiplicativePersistence(num, actualArray);
+            Assert.Equal(expected, actual);
+            Assert.Null(actualArray);
+
+            num = 277777788888899;
+            expectedArray = new long[0];
+            actualArray = new long[0];
+            actual = _object.MultiplicativePersistence(num, actualArray);
+            Assert.Equal(expected, actual);
+            Assert.Equal(expectedArray, actualArray);
+
+            num = 679;
+            expected = 5;
+            expectedArray = new long[] { 6 };
+            actualArray = new long[1];
+            actual = _object.MultiplicativePersistence(num, actualArray);
+            Assert.Equal(expected, actual);
+            Assert.Equal(expectedArray, actualArray);
+
+            num = 277777788888899;
+            expected = 11;
+            expectedArray = new long[] { 0, 20, 54, 336, 768 };
+            actualArray = new long[5];
             actual = _object.MultiplicativePersistence(num, actualArray);
             Assert.Equal(expected, actual);
             s = string.Join(", ", actualArray);
