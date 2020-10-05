@@ -1588,8 +1588,6 @@ namespace CSharp.Assignments.Tests
 
         }
 
-        /*
-
         [Trait("Category", "Medium")]
         [Fact]
         public void PalindromicCount()
@@ -1831,8 +1829,8 @@ namespace CSharp.Assignments.Tests
 
          
 
-        }*/
-        /*
+        }
+        
         [Trait("Category", "Hard")]
         [Fact]
         public void InEquilibrium()
@@ -1875,6 +1873,7 @@ namespace CSharp.Assignments.Tests
         }
 
         [Fact]
+        [Trait("Category", "Medium")]
         public void ClosestAdjacent()
         {
 
@@ -1922,6 +1921,7 @@ namespace CSharp.Assignments.Tests
         }
         
         [Fact]
+        [Trait("Category", "Medium")]
         public void Median()
         {
             string str;
@@ -1942,9 +1942,10 @@ namespace CSharp.Assignments.Tests
             actual = _object.Median(n);
             Assert.True(5 == actual, str + " ==> " + n.ToCode());
         }
-        */
+        
         #region Assertion Helpers
-        public void AssertNPZ(int[] expected, int[] actual)
+        
+        private void AssertNPZ(int[] expected, int[] actual)
         {
             // Asserting whether the values match (order doesn't matter)
             Assert.Equal(expected.OrderBy(x => x),

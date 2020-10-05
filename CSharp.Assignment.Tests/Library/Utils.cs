@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CSharp.Assignments.Tests.Library
@@ -156,6 +157,114 @@ namespace CSharp.Assignments.Tests.Library
                 return string.Format(@"""{0}""", str);
             }
             return x.ToString();
+        }
+
+        public static T FetchValue<T>(this string source)
+        {
+            bool isEmpty;
+            var value = FetchValue<T>(source, out isEmpty);
+            if (isEmpty)
+            {
+                string typeName = typeof(T).Name;
+                string an =
+                    typeName.StartsWith("a", StringComparison.InvariantCultureIgnoreCase) ||
+                    typeName.StartsWith("e", StringComparison.InvariantCultureIgnoreCase) ||
+                    typeName.StartsWith("i", StringComparison.InvariantCultureIgnoreCase) ||
+                    typeName.StartsWith("o", StringComparison.InvariantCultureIgnoreCase) ||
+                    typeName.StartsWith("u", StringComparison.InvariantCultureIgnoreCase) ?
+                    "an" : "a";
+                throw new FormatException($"Missing {an} {typeName} value at the end of the result.");
+            }
+            return value;
+        }
+
+        public static T FetchValue<T>(this string source, out bool isEmpty)
+        {
+            var numbers = FetchValues<T>(source);
+            if (numbers.Count > 0)
+            {
+                isEmpty = false;
+                return numbers[numbers.Count - 1];
+            }
+            isEmpty = true;
+            return default(T);
+        }
+
+
+        public static IList<T> FetchValues<T>(this string source)
+        {
+            var result = new List<T>();
+            var type = typeof(T);
+            string[] matches;
+            if (type == typeof(short) || type == typeof(int) || type == typeof(long))
+            {
+                matches = Regex.Split(source, @"[^-\d,]+");
+            }
+            else if (type == typeof(ushort) || type == typeof(uint) || type == typeof(ulong))
+            {
+                matches = Regex.Split(source, @"[^\d,]+");
+            }
+
+            else if (type == typeof(decimal) || type == typeof(float) || type == typeof(double))
+            {
+                matches = Regex.Split(source, @"[^-Ee+.\d,]+");
+            }
+            else if (type == typeof(bool))
+            {
+                matches = FetchText(source, new[] { "False", "True" });
+            }
+            else if (type.IsEnum)
+            {
+                matches = FetchText(source, Enum.GetNames(type));
+            }
+            else
+            {
+                throw new InvalidCastException($"{type.FullName} is not a supported type.");
+            }
+
+            for (int i = 0; i < matches.Length; i++)
+            {
+                matches[i] = matches[i].Replace(",", "");
+            }
+
+            foreach (string match in matches)
+            {
+                try
+                {
+                    var value = (T) Convert.ChangeType(match, type);
+                    result.Add(value);
+                }
+                catch
+                {
+                    // empty.
+                }
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Fetch a list of texts from a string
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static string[] FetchText(this string source, params string[] text)
+        {
+            string t = string.Join("|", text);
+            string regex = $"\\b(?:{t})\\b";
+            var matches = Regex.Matches(source, regex, RegexOptions.Singleline | RegexOptions.RightToLeft | RegexOptions.IgnoreCase);
+            if (matches.Count == 0)
+            {
+                return new string[0];
+            }
+            string[] outputs = new string[matches.Count];
+            int i = 0;
+            foreach (var m in matches)
+            {
+                outputs[i] = m.ToString();
+                i++;
+            }
+            return outputs;
         }
 
         /// <summary>
