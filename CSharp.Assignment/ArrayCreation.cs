@@ -98,7 +98,7 @@ namespace CSharp.Assignments
         /// of steps required to multiply all the digits of a
         /// number n by each other, repeating with the product
         /// until a single digit is obtained. In addition, populate the products
-        /// array with all the products in descending order,
+        /// array with all the products in ascending order,
         /// starting from index 0. Do not store the extra products into
         /// the array if the array's sizes is an issue.
         /// </summary>
