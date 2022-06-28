@@ -1919,7 +1919,7 @@ namespace CSharp.Assignments.Tests
 
 
         }
-        
+        /*
         [Fact]
         [Trait("Category", "Medium")]
         public void Median()
@@ -1942,6 +1942,7 @@ namespace CSharp.Assignments.Tests
             actual = _object.Median(n);
             Assert.True(5 == actual, str + " ==> " + n.ToCode());
         }
+        */
         
         #region Assertion Helpers
         
